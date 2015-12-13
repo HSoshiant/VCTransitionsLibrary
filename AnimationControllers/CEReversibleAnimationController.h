@@ -17,6 +17,10 @@
  The direction of the animation.
  */
 @property (nonatomic, assign) BOOL reverse;
+@property (nonatomic, assign) id<UIViewControllerContextTransitioning> transitionContext;
+@property (nonatomic, assign) UIView* fromView;
+@property (nonatomic, assign) UIView* toView;
+
 
 /**
  The animation duration.

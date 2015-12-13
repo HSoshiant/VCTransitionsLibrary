@@ -22,13 +22,14 @@
 }
 
 - (void)animateTransition:(id<UIViewControllerContextTransitioning>)transitionContext {
-    
+    self.transitionContext = transitionContext;
+
     UIViewController *fromVC = [transitionContext viewControllerForKey:UITransitionContextFromViewControllerKey];
     UIViewController *toVC = [transitionContext viewControllerForKey:UITransitionContextToViewControllerKey];
-    UIView *toView = toVC.view;
-    UIView *fromView = fromVC.view;
+    self.toView = toVC.view;
+    self.fromView = fromVC.view;
     
-    [self animateTransition:transitionContext fromVC:fromVC toVC:toVC fromView:fromView toView:toView];
+    [self animateTransition:transitionContext fromVC:fromVC toVC:toVC fromView:self.fromView toView:self.toView];
 }
 
 - (void)animateTransition:(id<UIViewControllerContextTransitioning>)transitionContext fromVC:(UIViewController *)fromVC toVC:(UIViewController *)toVC fromView:(UIView *)fromView toView:(UIView *)toView {
