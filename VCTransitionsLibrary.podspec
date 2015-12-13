@@ -1,19 +1,18 @@
 Pod::Spec.new do |s|
   s.name         = 'VCTransitionsLibrary'
-  s.version      = '1.7.0'
-  s.summary      = 'A collection of interactive iOS 7 custom transitions, including flip, fold, cross-fade and more'
-  s.author = {
-    'Colin Eberhardt' => 'colin.eberhardt@gmail.com'
-  }
-  s.source = {
-    :git => 'https://github.com/HSoshiant/VCTransitionsLibrary1.git',
-    :tag => '1.7.0'
-  }
-  s.license      = {
-    :type => 'MIT',
-    :file => 'MIT-LICENSE.txt'
-  }
-  s.source_files = 'AnimationControllers/*.{h,m}', 'InteractionControllers/*.{h,m}' 
-  s.homepage = 'https://github.com/HSoshiant/VCTransitionsLibrary1'
-  s.requires_arc = true
+  s.name = 'ObjectMapper'
+  s.version = '1.0.1'
+  s.license = 'MIT'
+  s.summary = 'JSON Object mapping written in Swift'
+  s.homepage = 'https://github.com/Hearst-DD/ObjectMapper'
+  s.authors = { 'Tristan Himmelman' => 'tristanhimmelman@gmail.com' }
+  s.source = { :git => 'https://github.com/Hearst-DD/ObjectMapper.git', :tag => s.version.to_s }
+
+  s.watchos.deployment_target = '2.0'
+  s.ios.deployment_target = '8.0'
+  s.osx.deployment_target = '10.9'
+  s.tvos.deployment_target = '9.0'
+  
+  s.requires_arc = 'true'
+  s.source_files = 'ObjectMapper/**/*.swift'
 end
