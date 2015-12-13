@@ -6,7 +6,7 @@ Pod::Spec.new do |s|
     'Colin Eberhardt' => 'colin.eberhardt@gmail.com'
   }
   s.source = {
-    :git => 'https://github.com/HSoshiant/VCTransitionsLibrary.git',
+    :git => 'https://github.com/HSoshiant/VCTransitionsLibrary1.git',
     :tag => '1.7.0'
   }
   s.license      = {
@@ -14,6 +14,6 @@ Pod::Spec.new do |s|
     :file => 'MIT-LICENSE.txt'
   }
   s.source_files = 'AnimationControllers/*.{h,m}', 'InteractionControllers/*.{h,m}' 
-  s.homepage = 'https://github.com/HSoshiant/VCTransitionsLibrary'
+  s.homepage = 'https://github.com/HSoshiant/VCTransitionsLibrary1'
   s.requires_arc = true
 end
