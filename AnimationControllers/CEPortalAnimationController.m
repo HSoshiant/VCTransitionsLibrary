@@ -19,6 +19,13 @@
     }
     
 }
+- (void)doAnim:(UIView*)fromV toV:(UIView*)toV duration:(NSTimeInterval)duration target:(id)target onComplete:(SEL)onComplete{
+  if(self.reverse){
+    [self doAnimBackward:fromV.superview fromV:fromV toV:toV duration:duration target:target onComplete:onComplete];
+  } else {
+    [self doAnimForward:fromV.superview fromV:fromV toV:toV duration:duration target:target onComplete:onComplete];
+  }
+}
 
 #define ZOOM_SCALE 0.8
 - (void)executeForwardsAnimation:(id<UIViewControllerContextTransitioning>)transitionContext fromVC:(UIViewController *)fromVC toVC:(UIViewController *)toVC fromView:(UIView *)fromView toView:(UIView *)toView {
@@ -76,7 +83,6 @@
                      } else {
                        [containerView addSubview:toV];
                        [self removeOtherViews:toV];
-                       toV.frame = containerView.bounds;
                      }
                      
                      if ([target respondsToSelector:onComplete]) {
