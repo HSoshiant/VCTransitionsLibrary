@@ -29,11 +29,11 @@
   toView.frame = initialFrame;
 
   
-  [self doAnim:fromView toV:toView duration:[self transitionDuration:transitionContext] target:self onComp:@selector(doOnComplete:)];
+  [self doAnim:fromView toV:toView duration:[self transitionDuration:transitionContext] target:self onComplete:@selector(doOnComplete:)];
 }
 
 // removes all the views other than the given view from the superview
-- (void)doAnim:(UIView*)fromV toV:(UIView*)toV duration:(NSTimeInterval)duration target:(id)target onComp:(SEL)onComplete{
+- (void)doAnim:(UIView*)fromV toV:(UIView*)toV duration:(NSTimeInterval)duration target:(id)target onComplete:(SEL)onComplete{
   
   // create two-part snapshots of both the from- and to- views
   NSArray* toViewSnapshots = [self createSnapshots:toV afterScreenUpdates:YES];
@@ -77,7 +77,15 @@
                                                               flippedSectionOfToViewShadow.alpha = 0.0;
                                                             }];
                             } completion:^(BOOL finished) {
-                              if ([self respondsToSelector:onComplete]) {
+                              // remove all the temporary views
+                              if ((self.transitionContext == nil && !finished) ||
+                                  (self.transitionContext != nil && [self.transitionContext transitionWasCancelled])) {
+                                [self removeOtherViews:fromV];
+                              } else {
+                                [self removeOtherViews:toV];
+                              }
+
+                              if ([target respondsToSelector:onComplete]) {
                                 ((void (*)(id, SEL, BOOL))[target methodForSelector:onComplete])
                                   (target, onComplete, finished);
                               }
@@ -87,13 +95,6 @@
 
 // animation finished
 -(void)doOnComplete:(BOOL)isDone{
-  // remove all the temporary views
-    if ([self.transitionContext transitionWasCancelled]) {
-      [self removeOtherViews:self.fromView];
-    } else {
-      [self removeOtherViews:self.toView];
-    }
-  
     //inform the context of completion
     [self.transitionContext completeTransition:![self.transitionContext transitionWasCancelled]];
 }
