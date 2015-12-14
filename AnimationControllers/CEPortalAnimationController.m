@@ -61,7 +61,8 @@
   toV.hidden = true;
   
   // animate
-  
+  UIColor *bgColor = containerView.backgroundColor;
+  containerView.backgroundColor = [UIColor blackColor];
   [UIView animateWithDuration:duration
                         delay:0.0
                       options:UIViewAnimationOptionCurveEaseOut
@@ -75,6 +76,7 @@
                      toViewSnapshot.frame = toV.frame;
                      
                    } completion:^(BOOL finished) {
+                     containerView.backgroundColor = bgColor;
                      
                      // remove all the temporary views
                      if ((self.transitionContext == nil && !finished) ||
@@ -128,6 +130,8 @@
   rightHandView.frame = CGRectOffset(rightHandView.frame, rightHandView.frame.size.width, 0);
   [containerView addSubview:rightHandView];
   
+  UIColor *bgColor = containerView.backgroundColor;
+  containerView.backgroundColor = [UIColor blackColor];
   // animate
   toV.hidden = true;
   [UIView animateWithDuration:duration
@@ -144,6 +148,7 @@
                      
                      
                    } completion:^(BOOL finished) {
+                     containerView.backgroundColor = bgColor;
                      
                      // remove all the temporary views
                      if ((self.transitionContext == nil && !finished) ||
