@@ -12,7 +12,7 @@
 
 
 - (void)animateTransition:(id<UIViewControllerContextTransitioning>)transitionContext fromVC:(UIViewController *)fromVC toVC:(UIViewController *)toVC fromView:(UIView *)fromView toView:(UIView *)toView {
-
+  
   // Add the toView to the container
   UIView* containerView = [transitionContext containerView];
   [containerView addSubview:toView];
@@ -27,13 +27,14 @@
   CGRect initialFrame = [transitionContext initialFrameForViewController:fromVC];
   fromView.frame =  initialFrame;
   toView.frame = initialFrame;
-
+  
   
   [self doAnim:fromView toV:toView duration:[self transitionDuration:transitionContext] target:self onComplete:@selector(doOnComplete:)];
 }
 
 // removes all the views other than the given view from the superview
 - (void)doAnim:(UIView*)fromV toV:(UIView*)toV duration:(NSTimeInterval)duration target:(id)target onComplete:(SEL)onComplete{
+  UIView* containerView = fromV.superview;
   
   // create two-part snapshots of both the from- and to- views
   NSArray* toViewSnapshots = [self createSnapshots:toV afterScreenUpdates:YES];
@@ -57,7 +58,8 @@
   
   // rotate the to- view by 90 degrees, hiding it
   flippedSectionOfToView.layer.transform = [self rotate:self.reverse ? M_PI_2 : -M_PI_2];
-  
+  UIColor *bgColor = containerView.backgroundColor;
+  containerView.backgroundColor = [UIColor blackColor];
   [UIView animateKeyframesWithDuration:duration
                                  delay:0.0
                                options:0
@@ -77,6 +79,8 @@
                                                               flippedSectionOfToViewShadow.alpha = 0.0;
                                                             }];
                             } completion:^(BOOL finished) {
+                              containerView.backgroundColor = bgColor;
+                              
                               // remove all the temporary views
                               if ((self.transitionContext == nil && !finished) ||
                                   (self.transitionContext != nil && [self.transitionContext transitionWasCancelled])) {
@@ -84,10 +88,10 @@
                               } else {
                                 [self removeOtherViews:toV];
                               }
-
+                              
                               if ([target respondsToSelector:onComplete]) {
                                 ((void (*)(id, SEL, BOOL))[target methodForSelector:onComplete])
-                                  (target, onComplete, finished);
+                                (target, onComplete, finished);
                               }
                               
                             }];
@@ -95,8 +99,8 @@
 
 // animation finished
 -(void)doOnComplete:(BOOL)isDone{
-    //inform the context of completion
-    [self.transitionContext completeTransition:![self.transitionContext transitionWasCancelled]];
+  //inform the context of completion
+  [self.transitionContext completeTransition:![self.transitionContext transitionWasCancelled]];
 }
 
 // removes all the views other than the given view from the superview
