@@ -13,4 +13,6 @@
  */
 
 @interface CEPortalAnimationController : CEReversibleAnimationController
+- (void)doAnimForward:(UIView*)containerView fromV:(UIView*)fromV toV:(UIView*)toV duration:(NSTimeInterval)duration target:(id)target onComplete:(SEL)onComplete;
+- (void)doAnimBackward:(UIView*)containerView fromV:(UIView*)fromV toV:(UIView*)toV duration:(NSTimeInterval)duration target:(id)target onComplete:(SEL)onComplete;
 @end
