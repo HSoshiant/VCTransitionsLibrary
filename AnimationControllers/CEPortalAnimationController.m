@@ -79,8 +79,9 @@
                      containerView.backgroundColor = bgColor;
                      
                      // remove all the temporary views
-                     if ((self.transitionContext == nil && !finished) ||
-                         (self.transitionContext != nil && [self.transitionContext transitionWasCancelled])) {
+                     BOOL b = ((self.transitionContext == nil && !finished) ||
+                               (self.transitionContext != nil && [self.transitionContext transitionWasCancelled]));
+                     if (b) {
                        [containerView addSubview:fromV];
                        [self removeOtherViews:fromV];
                      } else {
@@ -91,7 +92,7 @@
                      
                      if ([target respondsToSelector:onComplete]) {
                        ((void (*)(id, SEL, BOOL))[target methodForSelector:onComplete])
-                       (target, onComplete, finished);
+                       (target, onComplete, b);
                      }
                    }];
   
