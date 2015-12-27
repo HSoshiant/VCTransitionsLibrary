@@ -47,9 +47,10 @@
   
   CATransform3D t1 = [self firstTransform];
   CATransform3D t2 = [self secondTransformWithView:fromV];
-
+  
   UIColor *bgColor = containerView.backgroundColor;
   containerView.backgroundColor = [UIColor blackColor];
+  
   [UIView animateKeyframesWithDuration:self.duration delay:0.0 options:UIViewKeyframeAnimationOptionCalculationModeCubic animations:^{
     
     // push the from- view to the back
@@ -75,6 +76,11 @@
     containerView.backgroundColor = bgColor;
     BOOL b = ((self.transitionContext == nil && !finished) ||
               (self.transitionContext != nil && [self.transitionContext transitionWasCancelled]));
+    if (b) {
+      [self removeOtherViews:fromV];
+    }else{
+      [self removeOtherViews:toV];
+    }
     if ([target respondsToSelector:onComplete]) {
       ((void (*)(id, SEL, BOOL))[target methodForSelector:onComplete])
       (target, onComplete, b);
@@ -118,6 +124,7 @@
     // push the from- view off the bottom of the screen
     [UIView addKeyframeWithRelativeStartTime:0.0f relativeDuration:0.5f animations:^{
       fromV.frame = frameOffScreen;
+      fromV.alpha = 0.0;
     }];
     
     // animate the to- view into place
@@ -128,13 +135,18 @@
     [UIView addKeyframeWithRelativeStartTime:0.75f relativeDuration:0.25f animations:^{
       toV.layer.transform = CATransform3DIdentity;
     }];
+    
   } completion:^(BOOL finished) {
     containerView.backgroundColor = bgColor;
     BOOL b = ((self.transitionContext == nil && !finished) ||
-            (self.transitionContext != nil && [self.transitionContext transitionWasCancelled]));
+              (self.transitionContext != nil && [self.transitionContext transitionWasCancelled]));
     if (b) {
       toV.layer.transform = CATransform3DIdentity;
       toV.alpha = 1.0;
+      fromV.alpha = 1.0;
+      [self removeOtherViews:fromV];
+    }else{
+      [self removeOtherViews:toV];
     }
     if ([target respondsToSelector:onComplete]) {
       ((void (*)(id, SEL, BOOL))[target methodForSelector:onComplete])
@@ -167,5 +179,13 @@
   
   return t2;
 }
-
+// removes all the views other than the given view from the superview
+- (void)removeOtherViews:(UIView*)viewToKeep {
+  UIView *containerView = viewToKeep.superview;
+  for (UIView *view in containerView.subviews) {
+    if (view != viewToKeep) {
+      [view removeFromSuperview];
+    }
+  }
+}
 @end
