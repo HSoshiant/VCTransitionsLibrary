@@ -144,9 +144,11 @@
       toV.layer.transform = CATransform3DIdentity;
       toV.alpha = 1.0;
       fromV.alpha = 1.0;
-      [self removeOtherViews:fromV];
+      toV.tag = -999;
+      [self removeOtherViews:fromV.superview];
     }else{
-      [self removeOtherViews:toV];
+      fromV.tag = -999;
+      [self removeOtherViews:toV.superview];
     }
     if ([target respondsToSelector:onComplete]) {
       ((void (*)(id, SEL, BOOL))[target methodForSelector:onComplete])
@@ -180,10 +182,9 @@
   return t2;
 }
 // removes all the views other than the given view from the superview
-- (void)removeOtherViews:(UIView*)viewToKeep {
-  UIView *containerView = viewToKeep.superview;
-  for (UIView *view in containerView.subviews) {
-    if (view != viewToKeep) {
+- (void)removeOtherViews:(UIView*)containerV {
+  for (UIView *view in containerV.subviews) {
+    if (view.tag == -999) {
       [view removeFromSuperview];
     }
   }
